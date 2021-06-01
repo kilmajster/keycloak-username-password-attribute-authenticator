@@ -1,18 +1,37 @@
 package io.github.kilmajster.keycloak;
 
 
+import com.codeborne.selenide.WebDriverRunner;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
-import org.junit.jupiter.api.Test;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testcontainers.containers.BrowserWebDriverContainer;
 
 
-@Testcontainers
 public class UsernamePasswordAttributeFormAT extends BaseKeycloakAT {
 
-    @Container
-    private final KeycloakContainer keycloak = new KeycloakContainer(KEYCLOAK_DEV_DOCKER_IMAGE)
+    @Rule
+    public KeycloakContainer keycloak = new KeycloakContainer(KEYCLOAK_DEV_DOCKER_IMAGE)
             .withRealmImportFile("dev-realm.json");
+
+    @Rule
+    public BrowserWebDriverContainer chrome = new BrowserWebDriverContainer()
+            .withCapabilities(DesiredCapabilities.chrome());
+
+    @Before
+    public void setUp() {
+        RemoteWebDriver driver = chrome.getWebDriver();
+        WebDriverRunner.setWebDriver(driver);
+    }
+
+    @After
+    public void tearDown() {
+        WebDriverRunner.closeWebDriver();
+    }
 
     @Test
     public void shouldLogIntoAccountConsole() {

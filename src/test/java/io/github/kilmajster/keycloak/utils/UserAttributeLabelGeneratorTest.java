@@ -1,13 +1,15 @@
 package io.github.kilmajster.keycloak.utils;
 
-import org.junit.jupiter.api.Test;
+
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class UserAttributeLabelGeneratorTest {
+
+public class UserAttributeLabelGeneratorTest {
 
     @Test
-    void shouldPrettifyString() {
+    public void shouldPrettifyString() {
         final String attribute = "TEST_ATTRIBUTE-NAME";
 
         final String label = UserAttributeLabelGenerator.from(attribute);

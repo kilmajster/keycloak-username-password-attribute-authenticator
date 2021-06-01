@@ -58,22 +58,35 @@
         </dependency>
 
         <!-- test dependencies -->
+        <!--        <dependency>-->
+        <!--            <groupId>org.junit.jupiter</groupId>-->
+        <!--            <artifactId>junit-jupiter-api</artifactId>-->
+        <!--            <version>${junit.version}</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.junit.jupiter</groupId>-->
+        <!--            <artifactId>junit-jupiter-params</artifactId>-->
+        <!--            <version>${junit.version}</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.junit.jupiter</groupId>-->
+        <!--            <artifactId>junit-jupiter-engine</artifactId>-->
+        <!--            <version>${junit.version}</version>-->
+        <!--            <scope>test</scope>-->
+        <!--        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>${junit.version}</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit.version}</version>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>3.19.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -84,7 +97,7 @@
         </dependency>
         <dependency>
             <groupId>org.testcontainers</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <artifactId>selenium</artifactId>
             <version>${testcontainers.version}</version>
             <scope>test</scope>
         </dependency>
@@ -104,12 +117,6 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-chrome-driver</artifactId>
             <version>3.141.59</version>
-        </dependency>
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.19.0</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
