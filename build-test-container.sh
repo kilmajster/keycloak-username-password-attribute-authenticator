@@ -4,5 +4,5 @@ set -e
 
 docker build \
   -f src/main/docker/dev.Dockerfile \
-  -t kilmajster/keycloak-username-password-attribute-authenticator:dev \
+  -t kilmajster/keycloak-with-authenticator:test \
   .

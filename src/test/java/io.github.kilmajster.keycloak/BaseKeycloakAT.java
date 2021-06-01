@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class BaseKeycloakAT {
 
-    protected final static String KEYCLOAK_DEV_DOCKER_IMAGE = "keycloak-with-authenticator";
+    protected final static String KEYCLOAK_DEV_DOCKER_IMAGE = "kilmajster/keycloak-with-authenticator:test";
 
     public abstract KeycloakContainer keycloak();
 
