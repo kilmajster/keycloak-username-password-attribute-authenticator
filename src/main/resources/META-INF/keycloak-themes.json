@@ -1,0 +1,6 @@
+{
+  "themes": [{
+    "name": "base-with-attribute",
+    "types": ["login"]
+  }]
+}

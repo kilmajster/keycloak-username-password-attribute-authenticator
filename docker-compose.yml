@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  keycloak:
+    image: keycloak-with-authenticator
+    container_name: keycloak-dev
+    build:
+      context: .
+      dockerfile: src/main/docker/dev.Dockerfile
+    ports:
+      - 8081:8080
+      - 8787:8787
+    volumes:
+      - ./src/main/resources/dev-realm.json:/tmp/dev-realm.json
+    environment:
+      DEBUG: 'true'
+      DEBUG_PORT: '*:8787'
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      KEYCLOAK_IMPORT: /tmp/dev-realm.json
