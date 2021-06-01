@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  automation-tests:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -16,9 +16,9 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
-    - name: Build with Maven
+    - name: Build authenticator jar file
       run: mvn -B package --file pom.xml -Dmaven.test.skip=true
     - name: Build test Docker container
       run: sh ./build-test-container.sh
-    - name: Run Selenide tests with Docker
+    - name: Run Selenide tests
       run: mvn verify
