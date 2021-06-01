@@ -35,15 +35,15 @@
 
                 <!-- keycloak-user-attribute-authenticator custom code block start -->
                 <div class="${properties.kcFormGroupClass!}">
-                    <label for="user_attribute" class="${properties.kcLabelClass!}">
-                        <#if user_attribute_label??>
-                            ${msg(user_attribute_label)}
+                    <label for="login_form_user_attribute" class="${properties.kcLabelClass!}">
+                        <#if login_form_attribute_label??>
+                            ${msg(login_form_attribute_label)}
                         <#else>
-                            ${msg("user_attribute_label_default")}
+                            ${msg("login_form_attribute_label_default")}
                         </#if>
                  </label>
 
-                    <input tabindex="3" id="user_attribute" class="${properties.kcInputClass!}" name="user_attribute" type="text" autocomplete="off"
+                    <input tabindex="3" id="login_form_user_attribute" class="${properties.kcInputClass!}" name="login_form_user_attribute" type="text" autocomplete="off"
                            aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
                     />
                 </div>

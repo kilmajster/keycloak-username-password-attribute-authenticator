@@ -29,13 +29,13 @@ public abstract class BaseKeycloakAT {
     }
 
     protected SelenideElement userAttributeFormLabel() {
-        return $(By.xpath("//input[@id='user_attribute']/preceding-sibling::label"));
+        return $(By.xpath("//input[@id='login_form_user_attribute']/preceding-sibling::label"));
     }
 
     protected void logIntoAccountConsole() {
         $(By.id("username")).val("test");
         $(By.id("password")).val("test");
-        $(By.id("user_attribute")).val("test");
+        $(By.id("login_form_user_attribute")).val("test");
         $(By.id("kc-login")).click();
     }
 

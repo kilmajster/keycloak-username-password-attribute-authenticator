@@ -3,6 +3,10 @@
 ## Description
 Keycloak default login form with user attribute validation.
 
+## Using
+### using jar
+### using docker init container
+
 ## Configuration
 ### Authenticator config
 #### config via Keycloak UI
