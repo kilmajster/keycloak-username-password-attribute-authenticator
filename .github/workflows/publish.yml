@@ -20,6 +20,8 @@ jobs:
         run: mvn -B -ntp versions:set -DgenerateBackupPoms=false -DnewVersion="$TAG"
       - name: Generate GPG key
         run: sh ./.github/generate_gpg_key.sh
+        env:
+          GPG_PASS_PHRASE: ${{ secrets.GPG_PASS_PHRASE }}
       - name: Publish package
         run: mvn -B -ntp deploy -s .github/ossrhSettings.xml -P ossrh
         env:
