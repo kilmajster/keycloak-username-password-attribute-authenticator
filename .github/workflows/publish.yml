@@ -14,7 +14,7 @@ jobs:
           distribution: 'adopt'
           server-id: ossrh
           server-username: kilmajster
-          server-password: ${{ secrets.OSSRH_PASSWORD }}
+          server-password: MAVEN_PASSWORD
       - name: Build project
         run: mvn -B -ntp package
       - name: Get the tag name
@@ -33,6 +33,8 @@ jobs:
           -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
           -P ossrh \
           clean deploy
+        env:
+          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
       - name: Build docker init container
         run: |
           docker build \
