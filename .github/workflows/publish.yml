@@ -18,6 +18,8 @@ jobs:
         run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
       - name: Set version from git tag
         run: mvn -B -ntp versions:set -DgenerateBackupPoms=false -DnewVersion="$TAG"
+      - name: Generate GPG key
+        run: sh ./.github/generate_gpg_key.sh
       - name: Publish package
         run: mvn -B -ntp deploy -s .github/ossrhSettings.xml -P ossrh
         env:
