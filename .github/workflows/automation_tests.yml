@@ -17,7 +17,7 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Build authenticator jar file
-      run: mvn -B -ntp package --file pom.xml -Dmaven.test.skip=true
+      run: mvn -B -ntp package
     - name: Build test Docker container
       run: |
         docker build \
