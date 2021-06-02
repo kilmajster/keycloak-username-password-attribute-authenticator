@@ -7,7 +7,7 @@ cat >keydetails <<EOF
     Subkey-Type: RSA
     Subkey-Length: 2048
     Name-Real: Łukasz Włódarczyk
-    Name-Comment: kilmajster
+    Name-Comment: github
     Name-Email: lukasz.createam@gmail.com
     Expire-Date: 0
     %no-ask-passphrase

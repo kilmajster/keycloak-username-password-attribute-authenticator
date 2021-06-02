@@ -5,7 +5,7 @@
     <servers>
         <server>
             <id>ossrh</id>
-            <username>${MAVEN_USERNAME}</username>
+            <username>kilmajster</username>
             <password>${MAVEN_PASSWORD}</password>
         </server>
     </servers>
@@ -16,8 +16,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <gpg.executable>gpg2</gpg.executable>
-                <gpg.passphrase>${GPG_PASS_PHRASE}</gpg.passphrase>
+                <gpg.keyname>github</gpg.keyname>
             </properties>
         </profile>
     </profiles>

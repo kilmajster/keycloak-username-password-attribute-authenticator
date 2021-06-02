@@ -25,7 +25,6 @@ jobs:
       - name: Publish package
         run: mvn -B -ntp deploy -s .github/ossrhSettings.xml -P ossrh
         env:
-          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
       - name: Build docker init container
         run: sh ./build-init-container.sh $TAG
