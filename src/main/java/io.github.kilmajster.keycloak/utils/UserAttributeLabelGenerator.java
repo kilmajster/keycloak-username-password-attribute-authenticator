@@ -1,6 +1,6 @@
 package io.github.kilmajster.keycloak.utils;
 
-public class UserAttributeLabelGenerator {
+public final class UserAttributeLabelGenerator {
 
     public static String from(final String attributeName) {
         final String lowercaseWithSpaces = attributeName

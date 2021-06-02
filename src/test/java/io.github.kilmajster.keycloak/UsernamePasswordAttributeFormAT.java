@@ -3,24 +3,33 @@ package io.github.kilmajster.keycloak;
 
 import com.codeborne.selenide.WebDriverRunner;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
+import io.github.kilmajster.keycloak.base.BaseKeycloakInDockerAT;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testcontainers.containers.BrowserWebDriverContainer;
+import org.testcontainers.containers.output.Slf4jLogConsumer;
+
+import static io.github.kilmajster.keycloak.base.Steps.*;
 
 
-public class UsernamePasswordAttributeFormAT extends BaseKeycloakAT {
+public class UsernamePasswordAttributeFormAT extends BaseKeycloakInDockerAT {
 
     @Rule
     public KeycloakContainer keycloak = new KeycloakContainer(KEYCLOAK_DEV_DOCKER_IMAGE)
-            .withRealmImportFile("dev-realm.json");
+            .withRealmImportFile("dev-realm.json")
+            .withNetwork(testNetwork)
+            .withNetworkAliases(KEYCLOAK_NETWORK_ALIAS)
+            .withLogConsumer(new Slf4jLogConsumer(log));
 
     @Rule
-    public BrowserWebDriverContainer chrome = new BrowserWebDriverContainer()
-            .withCapabilities(DesiredCapabilities.chrome());
+    public BrowserWebDriverContainer chrome = (BrowserWebDriverContainer) new BrowserWebDriverContainer()
+            .withCapabilities(new ChromeOptions())
+            .withNetwork(testNetwork)
+            .withLogConsumer(new Slf4jLogConsumer(log));
 
     @Before
     public void setUp() {
@@ -35,15 +44,10 @@ public class UsernamePasswordAttributeFormAT extends BaseKeycloakAT {
 
     @Test
     public void shouldLogIntoAccountConsole() {
-        displayKeycloakAccountPage();
-        clickSignInButton();
-        verifyLoginFormIsDisplayedWithLabel("Test attr");
-        logIntoAccountConsole();
-        verifyThatUserIsLoggedIn();
-    }
-
-    @Override
-    public KeycloakContainer keycloak() {
-        return keycloak;
+        go_to_keycloak_account_page(KEYCLOAK_TEST_URL);
+        click_sign_in_button();
+        verify_login_form_is_displayed_with_user_attribute_label("Test attr");
+        log_into_account_console();
+        verify_that_user_is_logged_in();
     }
 }
