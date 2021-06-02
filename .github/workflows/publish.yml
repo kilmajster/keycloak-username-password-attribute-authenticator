@@ -13,13 +13,13 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Build project
-        run: mvn package
+        run: mvn -B -ntp package
       - name: Get the tag name
         run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
       - name: Set version from git tag
-        run: mvn versions:set -DgenerateBackupPoms=false -DnewVersion="$TAG"
+        run: mvn -B -ntp versions:set -DgenerateBackupPoms=false -DnewVersion="$TAG"
       - name: Publish package
-        run: mvn deploy -s .github/ossrhSettings.xml -P ossrh
+        run: mvn -B -ntp deploy -s .github/ossrhSettings.xml -P ossrh
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
