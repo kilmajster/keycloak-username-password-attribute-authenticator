@@ -9,15 +9,15 @@
             <password>${MAVEN_PASSWORD}</password>
         </server>
     </servers>
-    <profiles>
-        <profile>
-            <id>ossrh</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <gpg.keyname>github</gpg.keyname>
-            </properties>
-        </profile>
-    </profiles>
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>ossrh</id>-->
+<!--            <activation>-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--            </activation>-->
+<!--            <properties>-->
+<!--                <gpg.keyname>github</gpg.keyname>-->
+<!--            </properties>-->
+<!--        </profile>-->
+<!--    </profiles>-->
 </settings>

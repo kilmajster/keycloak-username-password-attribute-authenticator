@@ -23,7 +23,7 @@ jobs:
         env:
           GPG_PASS_PHRASE: ${{ secrets.GPG_PASS_PHRASE }}
       - name: Publish package
-        run: mvn -B -ntp deploy -s .github/ossrhSettings.xml -P ossrh
+        run: mvn -B -ntp deploy -s .github/ossrhSettings.xml -P ossrh -Dgpg.passphrase=thephrase
         env:
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
       - name: Build docker init container
