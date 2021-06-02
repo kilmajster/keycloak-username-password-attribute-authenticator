@@ -7,24 +7,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK 11
+      - name: Set up Maven Central Repository
         uses: actions/setup-java@v2
         with:
           java-version: '11'
           distribution: 'adopt'
+          server-id: ossrh
+          server-username: MAVEN_USERNAME
+          server-password: MAVEN_PASSWORD
       - name: Build project
         run: mvn -B -ntp package
       - name: Get the tag name
         run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
       - name: Set version from git tag
         run: mvn -B -ntp versions:set -DgenerateBackupPoms=false -DnewVersion="$TAG"
-      - name: Generate GPG key
-        run: sh ./.github/generate_gpg_key.sh
-        env:
-          GPG_PASS_PHRASE: ${{ secrets.GPG_PASS_PHRASE }}
+#      - name: Generate GPG key
+#        run: sh ./.github/generate_gpg_key.sh
+#        env:
+#          GPG_PASS_PHRASE: ${{ secrets.GPG_PASS_PHRASE }}
       - name: Publish package
-        run: mvn -B -ntp deploy -s .github/ossrhSettings.xml -P ossrh -Dgpg.passphrase=thephrase
+        run: mvn --batch-mode deploy
         env:
+          MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
       - name: Build docker init container
         run: sh ./build-init-container.sh $TAG
