@@ -21,17 +21,27 @@ jobs:
         run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
       - name: Set version from git tag
         run: mvn -B -ntp versions:set -DgenerateBackupPoms=false -DnewVersion="$TAG"
-#      - name: Generate GPG key
-#        run: sh ./.github/generate_gpg_key.sh
-#        env:
-#          GPG_PASS_PHRASE: ${{ secrets.GPG_PASS_PHRASE }}
+      - name: Install gpg secret key
+        run: |
+          cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
+          gpg --list-secret-keys --keyid-format LONG
       - name: Publish package
-        run: mvn --batch-mode deploy
+        run: |
+          mvn \
+          --no-transfer-progress \
+          --batch-mode \
+          -Dgpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
+          clean deploy
         env:
           MAVEN_USERNAME: ${{ secrets.OSSRH_USERNAME }}
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
       - name: Build docker init container
-        run: sh ./build-init-container.sh $TAG
+        run: |
+          docker build \
+          -f src/main/docker/initContainer.Dockerfile \
+          -t kilmajster/keycloak-username-password-attribute-authenticator:"$TAG" \
+          -t kilmajster/keycloak-username-password-attribute-authenticator:latest \
+          .
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
