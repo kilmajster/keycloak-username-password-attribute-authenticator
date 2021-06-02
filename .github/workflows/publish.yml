@@ -13,7 +13,7 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
           server-id: ossrh
-          server-username: kilmajster
+          server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
       - name: Build project
         run: mvn -B -ntp package
@@ -34,6 +34,7 @@ jobs:
           -P ossrh \
           clean deploy
         env:
+          MAVEN_USERNAME: kilmajster
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
       - name: Build docker init container
         run: |
