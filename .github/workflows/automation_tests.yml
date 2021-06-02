@@ -19,10 +19,6 @@ jobs:
     - name: Build authenticator jar file
       run: mvn -B -ntp package
     - name: Build test Docker container
-      run: |
-        docker build \
-        -f src/main/docker/dev.Dockerfile \
-        -t kilmajster/keycloak-with-authenticator:test \
-        .
+      run: docker build -f src/main/docker/dev.Dockerfile -t kilmajster/keycloak-with-authenticator:test .
     - name: Run Selenide tests
       run: mvn -B -ntp test -P automation-tests
