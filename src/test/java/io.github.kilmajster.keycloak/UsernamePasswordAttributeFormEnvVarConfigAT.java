@@ -21,9 +21,9 @@ public class UsernamePasswordAttributeFormEnvVarConfigAT extends BaseKeycloakInD
 
     @Test
     public void shouldTakeAttributeLabelFromEnvVariable() {
-        final String url = getKeycloakBaseUrl(keycloak.getFirstMappedPort());
+        final String keycloakBaseUrl = getKeycloakBaseUrl(keycloak);
 
-        go_to_keycloak_account_page(url);
+        go_to_keycloak_account_page(keycloakBaseUrl);
         click_sign_in_button();
         verify_login_form_is_displayed_with_user_attribute_label("Custom label");
         log_into_account_console();
