@@ -1,4 +1,4 @@
-name: CI with Selenide
+name: CI with Selenide & 🐋
 
 on:
   push:
