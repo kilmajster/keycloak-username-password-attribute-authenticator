@@ -47,6 +47,7 @@ jobs:
 
       - name: Add jar to github release
         uses: svenstaro/upload-release-action@v2
+        continue-on-error: true
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: target/keycloak-username-password-attribute-authenticator-${{ env.TAG }}.jar
