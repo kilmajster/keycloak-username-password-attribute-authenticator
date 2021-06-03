@@ -1,7 +1,9 @@
 name: Publish package to the Maven Central Repository & Docker Hub
+
 on:
   release:
     types: [created]
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -38,6 +40,7 @@ jobs:
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
       - name: Build docker init container
         run: |
+          echo "Building docker image = kilmajster/keycloak-username-password-attribute-authenticator:$TAG" && \
           docker build \
           -f src/main/docker/initContainer.Dockerfile \
           -t kilmajster/keycloak-username-password-attribute-authenticator:"$TAG" \
