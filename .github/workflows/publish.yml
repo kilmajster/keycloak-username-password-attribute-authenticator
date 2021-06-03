@@ -49,8 +49,8 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: target/keycloak-username-password-attribute-authenticator-${{ env.tag }}.jar
-          asset_name: keycloak-username-password-attribute-authenticator-${{ env.tag }}.jar
+          file: target/keycloak-username-password-attribute-authenticator-${{ env.TAG }}.jar
+          asset_name: keycloak-username-password-attribute-authenticator-${{ env.TAG }}.jar
           tag: ${{ github.ref }}
 
       - name: Build docker init container
