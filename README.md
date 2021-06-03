@@ -1,15 +1,24 @@
-# keycloak-username-password-attribute-authenticator
+# Keycloak username password attribute authenticator
+[![CI with Selenide](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/actions/workflows/automation_tests.yml/badge.svg)](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/actions/workflows/automation_tests.yml)
+![Maven Central](https://img.shields.io/maven-central/v/io.github.kilmajster/keycloak-username-password-attribute-authenticator)
+![Docker Image Version (latest by date)](https://img.shields.io/docker/v/kilmajster/keycloak-username-password-attribute-authenticator?label=docker%20hub)
+![Docker Pulls](https://img.shields.io/docker/pulls/kilmajster/keycloak-username-password-attribute-authenticator)
+![GitHub](https://img.shields.io/github/license/kilmajster/keycloak-username-password-attribute-authenticator)
 
 ## Description
 Keycloak default login form with user attribute validation.
 
-## Using
+## How 2 use
 ### using jar
 ### using docker init container
+```
+kilmajster/keycloak-username-password-attribute-authenticator:latest
+```
+#### example helm chart snippet
 
 ## Configuration
 ### Authenticator config
-#### config via Keycloak UI
+#### config via Keycloak UI / API
  - login_form_user_attribute
  - login_form_generate_label
  - login_form_attribute_label
@@ -23,16 +32,31 @@ Keycloak default login form with user attribute validation.
 #### Using bundled default keycloak theme
 #### Extending own theme
 
-## docker
-### example in docker-compose
+-------------------------------------
+### Development
+#### build the project
 ```shell
-$ docker-compose up --build --force-recreate
+$ mvn package
 ```
- http://localhost:8081/auth/realms/dev-realm/account
-
-
-### init container
+#### run with docker-compose
+```shell
+$ docker-compose up --build
 ```
-kilmajster/keycloak-username-password-attribute-authenticator:latest
+http://localhost:8081/auth/realms/dev-realm/account
+##### debug in docker with IntelliJ
+`.github/debug-in-docker.run.xml`
+
+#### automation tests
+##### build test docker image
+```shell
+$ docker-compose build
+```
+##### running tests with chrome
+```shell
+$ mvn test -P automation-tests
+```
+##### running tests in docker
+```shell
+$ mvn test -P automation-tests -D headless=true
 ```
 

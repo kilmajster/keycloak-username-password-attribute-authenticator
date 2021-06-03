@@ -1,12 +1,15 @@
 name: Publish package to the Maven Central Repository & Docker Hub
+
 on:
   release:
     types: [created]
+
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: Set up Maven Central Repository
         uses: actions/setup-java@v2
         with:
@@ -15,16 +18,21 @@ jobs:
           server-id: ossrh
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
-      - name: Build project
+
+      - name: Build a project
         run: mvn -B -ntp package
+
       - name: Get the tag name
         run: echo "TAG=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_ENV
+
       - name: Set version from git tag
         run: mvn -B -ntp versions:set -DgenerateBackupPoms=false -DnewVersion="$TAG"
-      - name: Import gpg secret key
+
+      - name: Import GPG key
         run: |
           cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
           gpg --list-secret-keys --keyid-format LONG
+
       - name: Publish maven package
         run: |
           mvn \
@@ -36,19 +44,33 @@ jobs:
         env:
           MAVEN_USERNAME: kilmajster
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+
+      - name: Add jar to github release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: target/keycloak-username-password-attribute-authenticator-${{ env.TAG }}.jar
+          asset_name: keycloak-username-password-attribute-authenticator-${{ env.TAG }}.jar
+          tag: ${{ github.ref }}
+
       - name: Build docker init container
         run: |
+          echo "Building docker image = kilmajster/keycloak-username-password-attribute-authenticator:$TAG" && \
           docker build \
+          --build-arg VERSION="$TAG" \
           -f src/main/docker/initContainer.Dockerfile \
           -t kilmajster/keycloak-username-password-attribute-authenticator:"$TAG" \
           -t kilmajster/keycloak-username-password-attribute-authenticator:latest \
           .
+
       - name: Log into Docker Hub
         uses: docker/login-action@v1
         with:
           username: kilmajster
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
-      - name: Push tagged image
+
+      - name: Push tagged docker image
         run: docker push kilmajster/keycloak-username-password-attribute-authenticator:"$TAG"
-      - name: Push latest image
+
+      - name: Push latest docker image
         run: docker push kilmajster/keycloak-username-password-attribute-authenticator:latest

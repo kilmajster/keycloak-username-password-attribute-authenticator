@@ -41,10 +41,11 @@
                         <#else>
                             ${msg("login_form_attribute_label_default")}
                         </#if>
-                 </label>
+                    </label>
 
-                    <input tabindex="3" id="login_form_user_attribute" class="${properties.kcInputClass!}" name="login_form_user_attribute" type="text" autocomplete="off"
-                           aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
+                    <input tabindex="3" id="login_form_user_attribute" class="${properties.kcInputClass!}"
+                           name="login_form_user_attribute" type="text" autocomplete="off"
+                           aria-invalid="<#if messagesPerField.existsError('login_form_user_attribute')>true</#if>"
                     />
                 </div>
                 <!-- keycloak-user-attribute-authenticator custom code block end -->
