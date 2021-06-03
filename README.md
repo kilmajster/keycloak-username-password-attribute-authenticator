@@ -1,5 +1,5 @@
 # Keycloak username password attribute authenticator
-[![CI with Selenide](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/actions/workflows/automation_tests.yml/badge.svg)](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/actions/workflows/automation_tests.yml)
+[![CI with 🐋 & Selenide](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/actions/workflows/automation-tests.yml/badge.svg)](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/actions/workflows/automation-tests.yml)
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.kilmajster/keycloak-username-password-attribute-authenticator)
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/kilmajster/keycloak-username-password-attribute-authenticator?label=docker%20hub)
 ![Docker Pulls](https://img.shields.io/docker/pulls/kilmajster/keycloak-username-password-attribute-authenticator)
@@ -10,6 +10,9 @@ Keycloak default login form with user attribute validation.
 
 ## How 2 use
 ### using jar
+
+
+
 ### using docker init container
 ```
 kilmajster/keycloak-username-password-attribute-authenticator:latest
