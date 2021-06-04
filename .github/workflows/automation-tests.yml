@@ -1,4 +1,4 @@
-name: CI with 🐋 & Selenide
+name: CI with Selenide
 
 on:
   push:
@@ -25,4 +25,4 @@ jobs:
       run: docker-compose build
 
     - name: Run Selenide tests
-      run: mvn -B -ntp test -P automation-tests -D headless=true
+      run: mvn -B -ntp test -P automation-tests -D selenide.headless=true
