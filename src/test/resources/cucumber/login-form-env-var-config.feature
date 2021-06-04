@@ -6,7 +6,7 @@ Feature: Login form with user attribute and environment variable based configura
     Then login form with attribute input labeled as "Test attr" should be shown
 
   Scenario: label is generated from attribute name when attribute is taken from environment variable configuration
-    Given keycloak is running with LOGIN_FORM_USER_ATTRIBUTE = "CUSTOM-user_AtTribUTte"
+    Given keycloak is running with LOGIN_FORM_USER_ATTRIBUTE = "CUSTOM-user_AtTribUTe"
     When user navigates to login page
     Then login form with attribute input labeled as "Custom user attribute" should be shown
 
