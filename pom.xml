@@ -155,6 +155,18 @@
             <artifactId>selenium-chrome-driver</artifactId>
             <version>${selenium-chrome-driver.version}</version>
         </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>6.9.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>6.9.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -184,7 +196,7 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <version>${maven-surefire-plugin.version}</version>
                         <configuration>
-                            <includes>**/*AT</includes>
+                            <includes>**/CucumberConfig.java</includes>
                         </configuration>
                     </plugin>
                 </plugins>
