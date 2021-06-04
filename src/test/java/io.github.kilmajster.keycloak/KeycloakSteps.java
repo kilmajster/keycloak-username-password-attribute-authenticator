@@ -2,11 +2,9 @@ package io.github.kilmajster.keycloak;
 
 import com.codeborne.selenide.SelenideElement;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import org.junit.Before;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +41,24 @@ public final class KeycloakSteps {
         }
     }
 
+    @Given("keycloak is running with LOGIN_FORM_GENERATE_LABEL = {}")
+    public void keycloak_is_running_with_login_form_generate_label_env(final boolean envLoginFormGenerateLabel) {
+        keycloak.addEnv("LOGIN_FORM_GENERATE_LABEL", envLoginFormGenerateLabel ? "true": "false");
+        if (!keycloak.isRunning()) {
+            log.info("Starting keycloak container with LOGIN_FORM_GENERATE_LABEL = " + envLoginFormGenerateLabel);
+            keycloak.start();
+        }
+    }
+
+    @Given("keycloak is running with LOGIN_FORM_USER_ATTRIBUTE = {string}")
+    public void keycloak_is_running_with_login_form_user_attribute_env(final String envLoginFormUserAttribute) {
+        keycloak.addEnv("LOGIN_FORM_USER_ATTRIBUTE", envLoginFormUserAttribute);
+        if (!keycloak.isRunning()) {
+            log.info("Starting keycloak container with LOGIN_FORM_USER_ATTRIBUTE = " + envLoginFormUserAttribute);
+            keycloak.start();
+        }
+    }
+
     @When("user goes to the account console page")
     public void go_to_keycloak_account_page() {
         final String keycloakUrl = TestConstants.KEYCLOAK_LOCAL_URL_PREFIX + keycloak.getFirstMappedPort();
@@ -56,14 +72,21 @@ public final class KeycloakSteps {
     }
 
     @When("user clicks a sign in button")
-    public static void click_sign_in_button() {
+    public void click_sign_in_button() {
         log.info("click_sign_in_button()");
 
         $(By.id("landingSignInButton")).click();
     }
 
+    @When("user navigates to login page")
+    public void user_navigates_to_login_page() {
+        go_to_keycloak_account_page();
+        user_should_be_not_logged_in();
+        click_sign_in_button();
+    }
+
     @Then("login form with attribute input labeled as {string} should be shown")
-    public static void verify_login_form_is_displayed_with_user_attribute_label(final String label) {
+    public void verify_login_form_is_displayed_with_user_attribute_label(final String label) {
         log.info("verify_login_form_is_displayed_with_user_attribute_label( label = " + label + " )");
 
         assertThat($(By.id("kc-form-login")).isDisplayed()).isTrue();
@@ -71,7 +94,7 @@ public final class KeycloakSteps {
     }
 
     @When("user log into account console with a valid credentials and user attribute equal {string}")
-    public static void log_into_account_console(final String attribute) {
+    public void log_into_account_console(final String attribute) {
         log.info("log_into_account_console()");
 
         $(By.id("username")).val(TEST_USERNAME);
@@ -81,13 +104,13 @@ public final class KeycloakSteps {
     }
 
     @Then("user should be logged into account console")
-    public static void verify_that_user_is_logged_in() {
+    public void verify_that_user_is_logged_in() {
         log.info("verify_that_user_is_logged_in()");
 
         $(By.id("landingLoggedInUser")).shouldHave(text("test"));
     }
 
-    private static SelenideElement userAttributeFormLabel() {
+    private SelenideElement userAttributeFormLabel() {
         return $(By.xpath("//input[@id='login_form_user_attribute']/preceding-sibling::label"));
     }
 }
