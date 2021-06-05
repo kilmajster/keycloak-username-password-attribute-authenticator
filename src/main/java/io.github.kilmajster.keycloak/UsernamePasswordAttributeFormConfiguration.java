@@ -12,6 +12,8 @@ public interface UsernamePasswordAttributeFormConfiguration {
     String USER_ATTRIBUTE = "login_form_user_attribute";
     String GENERATE_FORM_LABEL = "login_form_generate_label";
     String USER_ATTRIBUTE_LABEL = "login_form_attribute_label";
+    String USER_ATTRIBUTE_ERROR_LABEL = "login_form_attribute_error_label";
+    String CLEAR_USER_ON_ATTRIBUTE_VALIDATION_FAIL = "clear_user_on_attribute_validation_fail";
 
     List<ProviderConfigProperty> PROPS = ProviderConfigurationBuilder.create()
 
@@ -31,9 +33,24 @@ public interface UsernamePasswordAttributeFormConfiguration {
             .add()
 
             .property()
+            .name(CLEAR_USER_ON_ATTRIBUTE_VALIDATION_FAIL)
+            .type(ProviderConfigProperty.BOOLEAN_TYPE)
+            .label("Clear user on attribute validation fail")
+            .defaultValue(true)
+            .helpText("TODO")
+            .add()
+
+            .property()
             .name(USER_ATTRIBUTE_LABEL)
             .type(ProviderConfigProperty.STRING_TYPE)
             .label("User attribute form label")
+            .helpText("TODO")
+            .add()
+
+            .property()
+            .name(USER_ATTRIBUTE_ERROR_LABEL)
+            .type(ProviderConfigProperty.STRING_TYPE)
+            .label("Message for user attribute validation error")
             .helpText("TODO")
             .add()
 
@@ -46,5 +63,9 @@ public interface UsernamePasswordAttributeFormConfiguration {
 
     static boolean isGeneratePropertyLabelEnabled(final AuthenticationFlowContext context) {
         return Boolean.parseBoolean(configPropertyOf(context, GENERATE_FORM_LABEL));
+    }
+
+    static boolean isClearUserOnFailedAttributeValidationEnabled(final AuthenticationFlowContext context) {
+        return Boolean.parseBoolean(configPropertyOf(context, CLEAR_USER_ON_ATTRIBUTE_VALIDATION_FAIL));
     }
 }

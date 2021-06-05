@@ -1,3 +1,5 @@
 FROM quay.io/keycloak/keycloak:latest
 
-ADD target/keycloak-username-password-attribute-authenticator-SNAPSHOT.jar /opt/jboss/keycloak/standalone/deployments
+ARG VERSION=SNAPSHOT
+
+ADD target/keycloak-username-password-attribute-authenticator-${VERSION}.jar /opt/jboss/keycloak/standalone/deployments

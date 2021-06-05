@@ -10,10 +10,10 @@ public class UserAttributeLabelGeneratorTest {
 
     @Test
     public void shouldPrettifyString() {
-        final String attribute = "TEST_ATTRIBUTE-NAME";
+        final String attribute = "TEST_ATTRIBUTE-NAME.bLah";
 
-        final String label = UserAttributeLabelGenerator.from(attribute);
+        final String label = UserAttributeLabelGenerator.generateLabel(attribute);
 
-        assertThat(label).isEqualTo("Test attribute name");
+        assertThat(label).isEqualTo("Test attribute name blah");
     }
 }
