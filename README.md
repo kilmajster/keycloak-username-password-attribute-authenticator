@@ -15,6 +15,8 @@ To use this authenticator, it should be bundled together with Keycloak, here are
 
 
 ### using docker init container
+If you want to use this authenticator in some cloud envirenement, here is ready init container. Jar file is placed in `/opt/jboss/keycloak/standalone/deployments`, 
+so same location as target one. Possible 
 ```
 kilmajster/keycloak-username-password-attribute-authenticator:latest
 ```
@@ -23,14 +25,14 @@ kilmajster/keycloak-username-password-attribute-authenticator:latest
 ## Configuration
 ### Authenticator config
 #### config via Keycloak UI / API
- - login_form_user_attribute
- - login_form_generate_label
- - login_form_attribute_label
+- login_form_user_attribute
+- login_form_generate_label
+- login_form_attribute_label
 
 #### config via env variables
- - LOGIN_FORM_USER_ATTRIBUTE
- - LOGIN_FORM_GENERATE_LABEL
- - LOGIN_FORM_ATTRIBUTE_LABEL
+- LOGIN_FORM_USER_ATTRIBUTE
+- LOGIN_FORM_GENERATE_LABEL
+- LOGIN_FORM_ATTRIBUTE_LABEL
 
 ### Theme config
 #### Using bundled default keycloak theme

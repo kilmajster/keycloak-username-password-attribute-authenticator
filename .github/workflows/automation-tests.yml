@@ -18,11 +18,14 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
 
+    - name: Set version from git commit SHA
+      run: mvn -B -ntp versions:set -DgenerateBackupPoms=false -DnewVersion="${GITHUB_SHA::6}"
+
     - name: Build authenticator jar file
       run: mvn -B -ntp package
 
     - name: Build test docker container
-      run: docker-compose build
+      run: docker-compose build --build-arg VERSION="${GITHUB_SHA::6}"
 
     - name: Run automation tests
       run: mvn -B -ntp test -P automation-tests -D selenide.headless=true
