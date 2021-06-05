@@ -9,13 +9,16 @@ import org.keycloak.authentication.authenticators.browser.AbstractUsernameFormAu
 import org.keycloak.authentication.authenticators.browser.UsernamePasswordForm;
 import org.keycloak.events.Details;
 import org.keycloak.events.Errors;
+import org.keycloak.forms.login.LoginFormsProvider;
 import org.keycloak.models.ModelDuplicateException;
 import org.keycloak.models.UserModel;
+import org.keycloak.models.utils.FormMessage;
 import org.keycloak.models.utils.KeycloakModelUtils;
 import org.keycloak.services.ServicesLogger;
 import org.keycloak.services.managers.AuthenticationManager;
 import org.keycloak.services.messages.Messages;
 import org.keycloak.services.validation.Validation;
+import org.keycloak.theme.FreeMarkerUtil;
 
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -25,6 +28,34 @@ import static io.github.kilmajster.keycloak.UsernamePasswordAttributeFormConfigu
 public class UsernamePasswordAttributeForm extends UsernamePasswordForm implements Authenticator {
 
     protected static ServicesLogger log = ServicesLogger.LOGGER;
+
+    @Override
+    protected Response challenge(AuthenticationFlowContext context, String error, String field) {
+        LoginFormsProvider form = context.form().setExecution(context.getExecution().getId());
+        if (error != null) {
+            if (field != null) {
+                form.addError(new FormMessage(field, error));
+            } else {
+                form.setError(error, new Object[0]);
+            }
+        }
+
+        configureUserAttributeLabel(context);
+
+        return createLoginForm(form);
+    }
+
+    @Override
+    protected Response challenge(AuthenticationFlowContext context, MultivaluedMap<String, String> formData) {
+        LoginFormsProvider forms = context.form();
+        if (formData.size() > 0) {
+            forms.setFormData(formData);
+        }
+
+        configureUserAttributeLabel(context);
+
+        return forms.createLoginUsernamePassword();
+    }
 
     @Override
     public void authenticate(AuthenticationFlowContext context) {
@@ -40,9 +71,7 @@ public class UsernamePasswordAttributeForm extends UsernamePasswordForm implemen
             }
         }
 
-        configureUserAttributeLabel(context);
-
-        Response challengeResponse = this.challenge(context, formData);
+        Response challengeResponse = challenge(context, formData);
         context.challenge(challengeResponse);
     }
 
@@ -55,7 +84,7 @@ public class UsernamePasswordAttributeForm extends UsernamePasswordForm implemen
             if (userAttributeName != null && !userAttributeName.isEmpty()) {
                 context.form().setAttribute(USER_ATTRIBUTE_LABEL,
                         isGeneratePropertyLabelEnabled(context)
-                                ? UserAttributeLabelGenerator.from(userAttributeName)
+                                ? UserAttributeLabelGenerator.generateLabel(userAttributeName)
                                 : userAttributeName);
             } else {
                 log.warn("Configuration of keycloak-user-attribute-authenticator is incomplete! " +
@@ -96,7 +125,32 @@ public class UsernamePasswordAttributeForm extends UsernamePasswordForm implemen
     private boolean invalidUserAttributeHandler(AuthenticationFlowContext context, UserModel user, boolean isAttributeEmpty) {
         context.getEvent().user(user);
         context.getEvent().error(Errors.INVALID_USER_CREDENTIALS);
-        Response challengeResponse = challenge(context, getDefaultChallengeMessage(context), USER_ATTRIBUTE);
+
+        String errorText;
+        final String userAttributeErrorLabel = configPropertyOf(context, USER_ATTRIBUTE_ERROR_LABEL);
+        if (userAttributeErrorLabel != null && !userAttributeErrorLabel.isBlank()) {
+            // error text directly from error label propertyModelException
+            errorText = userAttributeErrorLabel;
+        } else {
+            final String userAttributeLabel = configPropertyOf(context, USER_ATTRIBUTE_LABEL);
+            if (userAttributeLabel != null && !userAttributeLabel.isBlank()) {
+                // get message from message.properties in case USER_ATTRIBUTE_LABEL is a message key
+                final String message = context.form().getMessage(userAttributeLabel);
+                // generating error message based on provided user attribute label
+                errorText = UserAttributeLabelGenerator.generateErrorText(message != null ? message : userAttributeLabel);
+            } else {
+                // user attribute label not provided so generating text based on attribute name
+                errorText = isGeneratePropertyLabelEnabled(context) // generate pretty error if property is not disabled
+                        ? UserAttributeLabelGenerator.generateErrorText(configPropertyOf(context, USER_ATTRIBUTE))
+                        : "Invalid ".concat(configPropertyOf(context, USER_ATTRIBUTE)); // use raw attribute name
+            }
+        }
+
+        if (isClearUserOnFailedAttributeValidationEnabled(context)) {
+            context.clearUser();
+        }
+
+        Response challengeResponse = challenge(context, errorText, USER_ATTRIBUTE);
 
         if (isAttributeEmpty) {
             context.forceChallenge(challengeResponse);
