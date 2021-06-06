@@ -19,7 +19,7 @@ jobs:
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
 
-      - name: Build a project
+      - name: Build a project & run unit tests
         run: mvn -B -ntp package
 
       - name: Get the tag name
@@ -45,7 +45,7 @@ jobs:
           MAVEN_USERNAME: kilmajster
           MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
 
-      - name: Add jar to github release
+      - name: Add jar to Github Release
         uses: svenstaro/upload-release-action@v2
         continue-on-error: true
         with:
@@ -54,7 +54,7 @@ jobs:
           asset_name: keycloak-username-password-attribute-authenticator-${{ env.TAG }}.jar
           tag: ${{ github.ref }}
 
-      - name: Build docker init container
+      - name: Build Docker init container
         run: |
           docker build \
           --build-arg VERSION="$TAG" \
@@ -69,8 +69,8 @@ jobs:
           username: kilmajster
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
 
-      - name: Push tagged docker image
+      - name: Push tagged Docker image
         run: docker push kilmajster/keycloak-username-password-attribute-authenticator:"$TAG"
 
-      - name: Push latest docker image
+      - name: Push latest Docker image
         run: docker push kilmajster/keycloak-username-password-attribute-authenticator:latest
