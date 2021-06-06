@@ -20,7 +20,7 @@ public interface UsernamePasswordAttributeFormConfiguration {
             .property()
             .name(USER_ATTRIBUTE)
             .type(ProviderConfigProperty.STRING_TYPE)
-            .label("User attribute key name")
+            .label("User attribute")
             .helpText("TODO")
             .add()
 
@@ -28,15 +28,15 @@ public interface UsernamePasswordAttributeFormConfiguration {
             .name(GENERATE_FORM_LABEL)
             .type(ProviderConfigProperty.BOOLEAN_TYPE)
             .label("Generate label")
-            .defaultValue(true)
+            .defaultValue("true") // only string value is accepted
             .helpText("TODO")
             .add()
 
             .property()
             .name(CLEAR_USER_ON_ATTRIBUTE_VALIDATION_FAIL)
             .type(ProviderConfigProperty.BOOLEAN_TYPE)
-            .label("Clear user on attribute validation fail")
-            .defaultValue(true)
+            .label("Clear user on validation fail")
+            .defaultValue("true") // only string value is accepted
             .helpText("TODO")
             .add()
 
@@ -50,7 +50,7 @@ public interface UsernamePasswordAttributeFormConfiguration {
             .property()
             .name(USER_ATTRIBUTE_ERROR_LABEL)
             .type(ProviderConfigProperty.STRING_TYPE)
-            .label("Message for user attribute validation error")
+            .label("Validation error message")
             .helpText("TODO")
             .add()
 
