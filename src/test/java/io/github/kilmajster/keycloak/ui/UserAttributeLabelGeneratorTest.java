@@ -1,4 +1,4 @@
-package io.github.kilmajster.keycloak.utils;
+package io.github.kilmajster.keycloak.ui;
 
 
 import org.junit.Test;

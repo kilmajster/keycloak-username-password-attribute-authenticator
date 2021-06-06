@@ -1,6 +1,6 @@
 package io.github.kilmajster.keycloak;
 
-import io.github.kilmajster.keycloak.utils.UserAttributeLabelGenerator;
+import io.github.kilmajster.keycloak.ui.UserAttributeLabelGenerator;
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.AuthenticationFlowError;
