@@ -9,48 +9,48 @@ import java.util.Optional;
 
 public interface UsernamePasswordAttributeFormConfiguration {
 
-    String USER_ATTRIBUTE = "login_form_user_attribute";
-    String GENERATE_FORM_LABEL = "login_form_generate_label";
-    String USER_ATTRIBUTE_LABEL = "login_form_attribute_label";
-    String USER_ATTRIBUTE_ERROR_LABEL = "login_form_attribute_error_label";
+    String LOGIN_FORM_USER_ATTRIBUTE = "login_form_user_attribute";
+    String LOGIN_FORM_GENERATE_LABEL = "login_form_generate_label";
+    String LOGIN_FORM_ATTRIBUTE_LABEL = "login_form_attribute_label";
+    String LOGIN_FORM_ERROR_MESSAGE = "login_form_error_message";
     String CLEAR_USER_ON_ATTRIBUTE_VALIDATION_FAIL = "clear_user_on_attribute_validation_fail";
 
     List<ProviderConfigProperty> PROPS = ProviderConfigurationBuilder.create()
 
             .property()
-            .name(USER_ATTRIBUTE)
+            .name(LOGIN_FORM_USER_ATTRIBUTE)
             .type(ProviderConfigProperty.STRING_TYPE)
-            .label("User attribute key name")
+            .label("User attribute")
             .helpText("TODO")
             .add()
 
             .property()
-            .name(GENERATE_FORM_LABEL)
+            .name(LOGIN_FORM_GENERATE_LABEL)
             .type(ProviderConfigProperty.BOOLEAN_TYPE)
             .label("Generate label")
-            .defaultValue(true)
+            .defaultValue("true") // only string value is accepted
             .helpText("TODO")
             .add()
 
             .property()
             .name(CLEAR_USER_ON_ATTRIBUTE_VALIDATION_FAIL)
             .type(ProviderConfigProperty.BOOLEAN_TYPE)
-            .label("Clear user on attribute validation fail")
-            .defaultValue(true)
+            .label("Clear user on validation fail")
+            .defaultValue("true") // only string value is accepted
             .helpText("TODO")
             .add()
 
             .property()
-            .name(USER_ATTRIBUTE_LABEL)
+            .name(LOGIN_FORM_ATTRIBUTE_LABEL)
             .type(ProviderConfigProperty.STRING_TYPE)
             .label("User attribute form label")
             .helpText("TODO")
             .add()
 
             .property()
-            .name(USER_ATTRIBUTE_ERROR_LABEL)
+            .name(LOGIN_FORM_ERROR_MESSAGE)
             .type(ProviderConfigProperty.STRING_TYPE)
-            .label("Message for user attribute validation error")
+            .label("Validation error message")
             .helpText("TODO")
             .add()
 
@@ -61,8 +61,8 @@ public interface UsernamePasswordAttributeFormConfiguration {
                 .orElse(context.getAuthenticatorConfig().getConfig().get(configPropertyName));
     }
 
-    static boolean isGeneratePropertyLabelEnabled(final AuthenticationFlowContext context) {
-        return Boolean.parseBoolean(configPropertyOf(context, GENERATE_FORM_LABEL));
+    static boolean isGenerateLabelEnabled(final AuthenticationFlowContext context) {
+        return Boolean.parseBoolean(configPropertyOf(context, LOGIN_FORM_GENERATE_LABEL));
     }
 
     static boolean isClearUserOnFailedAttributeValidationEnabled(final AuthenticationFlowContext context) {

@@ -318,7 +318,7 @@
     "totp" : false,
     "emailVerified" : false,
     "attributes" : {
-      "test_attr" : [ "test" ]
+      "foot_size" : [ "46" ]
     },
     "credentials" : [ {
       "id" : "a0f53e85-a522-4ab4-85cb-95224dec8d35",
@@ -1262,7 +1262,7 @@
     "topLevel" : false,
     "builtIn" : false,
     "authenticationExecutions" : [ {
-      "authenticatorConfig" : "test_attr",
+      "authenticatorConfig" : "foot_size form",
       "authenticator" : "auth-username-password-attr-form",
       "authenticatorFlow" : false,
       "requirement" : "REQUIRED",
@@ -1711,17 +1711,17 @@
     }
   }, {
     "id" : "313d1d2f-08ac-4e5f-9eef-9899e0a64d3d",
-    "alias" : "test_attr",
+    "alias" : "foot_size form",
     "config" : {
-      "login_form_user_attribute" : "test_attr",
+      "login_form_user_attribute" : "foot_size",
       "clear_user_on_attribute_validation_fail" : "true",
       "login_form_generate_label": "true"
     }
   }, {
     "id" : "def2c287-f0b2-4b71-bf8e-9dee33bcbe6b",
-    "alias" : "test_attr auth",
+    "alias" : "foot_size auth",
     "config" : {
-      "user_attribute" : "test_attr"
+      "user_attribute" : "foot_size"
     }
   } ],
   "requiredActions" : [ {
