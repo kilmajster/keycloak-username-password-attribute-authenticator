@@ -86,7 +86,7 @@ If enabled, label for login form will be generated based on attribute name, so a
 
 By default, set to `true`. If `User attribute form label`
 is configured, label is taken form configuration and generation is skipped.
-##### Clear user on validation fail` (default true)
+##### `Clear user on validation fail` (default true)
 If enabled, user is not stored in session context in case username and password were valid but user attribute was not.
 ##### `User attribute form label`
 Message which will be displayed as user attribute input label. If value is a valid message key, then proper translation will be used.
@@ -111,14 +111,16 @@ If such config exists, then configuration from Keycloak admin UI is ignored. Ava
 Theme configuration is handled in clients section, in following example Keycloak default `account-console` client will be used.
 
 #### Using bundled default keycloak theme
-In Keycloak admin panel, go to _Clients_ and select client you want to authenticate with user attribute form. Set `base-with-attribute` 
-as _Login theme_ and in _Authentication Flow Overrides_ for _Browser Flow_, choose authentication that contain previously configured login form, 
+In Keycloak admin panel, go to _Clients_ and select client you want to authenticate with user attribute form. As _Login Theme_ set `base-with-attribute`
+and in _Authentication Flow Overrides_ for _Browser Flow_, choose authentication that contain previously configured login form, 
 so for example `Browser with user attribute`, like below:
 <p align="center">
     <img src="/.github/img/example-client-config.png" alt="Example client configuration">
 </p>
 
 #### Extending own theme
+If you have own theme, then in `.your-theme/login/login.ftl` add following below `<div>` responsible for a password stuff or anywhere you want.
+How it was done with _Keycloak base_ theme, you can check [here](/src/main/resources/theme/base-with-attribute/login/login.ftl).
 ```html
 ...
 <div class="${properties.kcFormGroupClass!}">
@@ -152,28 +154,32 @@ so for example `Browser with user attribute`, like below:
 
 -----------------
 ### Development
-#### build the project
+#### Build the project
 ```shell
 $ mvn package
 ```
-#### run with docker-compose
+
+#### Run Keycloak with authenticator in Docker
 ```shell
 $ docker-compose up --build
 ```
-http://localhost:8081/auth/realms/dev-realm/account
-##### debug in docker with IntelliJ
+Open browser and go to http://localhost:8081/auth/realms/dev-realm/account
+
+##### Debug in docker with IntelliJ
 `.github/debug-in-docker.run.xml`
 
-#### automation tests
-##### build test docker image
+#### Automation tests
+##### Build test docker image
 ```shell
 $ docker-compose build
 ```
-##### running tests with chrome
+
+##### Running tests with chrome
 ```shell
 $ mvn test -P automation-tests
 ```
-##### running tests in docker
+
+##### Running tests in docker
 ```shell
 $ mvn test -P automation-tests -D selenide.headless=true
 ```
