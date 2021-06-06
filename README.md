@@ -54,39 +54,69 @@ extraVolumes: |
 ``` 
 
 ## Configuration
-### Authentication configuration
+Following steps shows how to create authentication flow that uses authenticator with user attribute validation.
+1. In Keycloak admin console, go to _Authentication_ section, select authentication type of _Browser_ and click _Copy_.
+2. Set name for new authentication flow eg. `Browser with user attribute` and click _Ok_.
+3. In newly created authentication flow remove _Username Password Form_ execution.
+4. On _Browser With User Attribute Forms_ level, click _Actions_ > _Add execution_ and select provider of type 
+   _Username Password Attribute Form_, then save.
 <p align="center">
     <img src="/.github/img/new-authenticator-execution.png" alt="New authentication execution">
 </p>
 
+5. Then move _Username Password Attribute Form_ on a previous position of _Username Password Form_, 
+   so in the end authentication flow should look like following:
 <p align="center">
     <img src="/.github/img/foot-size-execution-config-tooltip.png" alt="Form config tooltip">
 </p>
 
-#### Minimal configuration
-- login_form_user_attribute
-
+6. On _Username Password Attribute Form_ level, click _Actions_ > _Config_. 
 <p align="center">
     <img src="/.github/img/foot-size-form-config.png" alt="Authenticator configuration">
 </p>
 
-#### Advanced configuration
- - login_form_generate_label
- - login_form_attribute_label
- - login_form_error_message
- - clear_user_on_attribute_validation_fail
-##### config via Keycloak API
-TODO
-##### Configuration via environment variables
+### Minimal configuration
+##### `User attribute`
+Attribute used to validate login form.
+### Advanced configuration
+##### `Generate label` (default true)
+If enabled, label for login form will be generated based on attribute name, so attribute with name:
+ - `foot_size` will be labeled as _Foot size_
+ - `REALLY_custom.user-Attribute` will be translated to _Really custom user attribute_, etc.
+
+By default, set to `true`. If `User attribute form label`
+is configured, label is taken form configuration and generation is skipped.
+##### Clear user on validation fail` (default true)
+If enabled, user is not stored in session context in case username and password were valid but user attribute was not.
+##### `User attribute form label`
+Message which will be displayed as user attribute input label. If value is a valid message key, then proper translation will be used.
+##### `Validation error message`
+Message which will be displayed as user attribute validation error. If value is a valid message key, then proper translation will be used.
+
+#### Configuration via environment variables
+Configuration could be also provided as environment variables. 
+If such config exists, then configuration from Keycloak admin UI is ignored. Available properties:
 - LOGIN_FORM_GENERATE_LABEL
 - LOGIN_FORM_ATTRIBUTE_LABEL
 - LOGIN_FORM_ERROR_MESSAGE
 - CLEAR_USER_ON_ATTRIBUTE_VALIDATION_FAIL
 
+#### config via Keycloak API
+- login_form_generate_label
+- login_form_attribute_label
+- login_form_error_message
+- clear_user_on_attribute_validation_fail
+
 ### Theme configuration
+Theme configuration is handled in clients section, in following example Keycloak default `account-console` client will be used.
+
 #### Using bundled default keycloak theme
- - choose theme `base-with-attribute`
- - override authentication flow to `Browser with user attribute`
+In Keycloak admin panel, go to _Clients_ and select client you want to authenticate with user attribute form. Set `base-with-attribute` 
+as _Login theme_ and in _Authentication Flow Overrides_ for _Browser Flow_, choose authentication that contain previously configured login form, 
+so for example `Browser with user attribute`, like below:
+<p align="center">
+    <img src="/.github/img/example-client-config.png" alt="Example client configuration">
+</p>
 
 #### Extending own theme
 ```html
@@ -120,7 +150,7 @@ TODO
 ...        
 ```
 
--------------------------------------
+-----------------
 ### Development
 #### build the project
 ```shell
