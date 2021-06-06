@@ -18,7 +18,6 @@ import org.keycloak.services.ServicesLogger;
 import org.keycloak.services.managers.AuthenticationManager;
 import org.keycloak.services.messages.Messages;
 import org.keycloak.services.validation.Validation;
-import org.keycloak.theme.FreeMarkerUtil;
 
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
@@ -76,14 +75,14 @@ public class UsernamePasswordAttributeForm extends UsernamePasswordForm implemen
     }
 
     private void configureUserAttributeLabel(AuthenticationFlowContext context) {
-        final String userAttributeLabel = configPropertyOf(context, USER_ATTRIBUTE_LABEL);
+        final String userAttributeLabel = configPropertyOf(context, LOGIN_FORM_ATTRIBUTE_LABEL);
         if (userAttributeLabel != null) {
-            context.form().setAttribute(USER_ATTRIBUTE_LABEL, userAttributeLabel);
+            context.form().setAttribute(LOGIN_FORM_ATTRIBUTE_LABEL, userAttributeLabel);
         } else {
-            final String userAttributeName = configPropertyOf(context, USER_ATTRIBUTE);
+            final String userAttributeName = configPropertyOf(context, LOGIN_FORM_USER_ATTRIBUTE);
             if (userAttributeName != null && !userAttributeName.isEmpty()) {
-                context.form().setAttribute(USER_ATTRIBUTE_LABEL,
-                        isGeneratePropertyLabelEnabled(context)
+                context.form().setAttribute(LOGIN_FORM_ATTRIBUTE_LABEL,
+                        isGenerateLabelEnabled(context)
                                 ? UserAttributeLabelGenerator.generateLabel(userAttributeName)
                                 : userAttributeName);
             } else {
@@ -103,7 +102,7 @@ public class UsernamePasswordAttributeForm extends UsernamePasswordForm implemen
     }
 
     private boolean validateUserAttribute(AuthenticationFlowContext context, UserModel user, MultivaluedMap<String, String> formData) {
-        final String providedAttribute = formData.getFirst(USER_ATTRIBUTE);
+        final String providedAttribute = formData.getFirst(LOGIN_FORM_USER_ATTRIBUTE);
         if (providedAttribute == null || providedAttribute.isEmpty()) {
             return invalidUserAttributeHandler(context, user, true);
         }
@@ -116,7 +115,7 @@ public class UsernamePasswordAttributeForm extends UsernamePasswordForm implemen
     }
 
     private boolean isProvidedAttributeValid(AuthenticationFlowContext context, UserModel user, String providedUserAttribute) {
-        String userAttributeName = context.getAuthenticatorConfig().getConfig().get(USER_ATTRIBUTE);
+        String userAttributeName = context.getAuthenticatorConfig().getConfig().get(LOGIN_FORM_USER_ATTRIBUTE);
         return user.getAttributeStream(userAttributeName)
                 .anyMatch(attr -> attr.equals(providedUserAttribute));
     }
@@ -127,12 +126,12 @@ public class UsernamePasswordAttributeForm extends UsernamePasswordForm implemen
         context.getEvent().error(Errors.INVALID_USER_CREDENTIALS);
 
         String errorText;
-        final String userAttributeErrorLabel = configPropertyOf(context, USER_ATTRIBUTE_ERROR_LABEL);
-        if (userAttributeErrorLabel != null && !userAttributeErrorLabel.isBlank()) {
+        final String configuredErrorMessage = configPropertyOf(context, LOGIN_FORM_ERROR_MESSAGE);
+        if (configuredErrorMessage != null && !configuredErrorMessage.isBlank()) {
             // error text directly from error label propertyModelException
-            errorText = userAttributeErrorLabel;
+            errorText = configuredErrorMessage;
         } else {
-            final String userAttributeLabel = configPropertyOf(context, USER_ATTRIBUTE_LABEL);
+            final String userAttributeLabel = configPropertyOf(context, LOGIN_FORM_ATTRIBUTE_LABEL);
             if (userAttributeLabel != null && !userAttributeLabel.isBlank()) {
                 // get message from message.properties in case USER_ATTRIBUTE_LABEL is a message key
                 final String message = context.form().getMessage(userAttributeLabel);
@@ -140,9 +139,9 @@ public class UsernamePasswordAttributeForm extends UsernamePasswordForm implemen
                 errorText = UserAttributeLabelGenerator.generateErrorText(message != null ? message : userAttributeLabel);
             } else {
                 // user attribute label not provided so generating text based on attribute name
-                errorText = isGeneratePropertyLabelEnabled(context) // generate pretty error if property is not disabled
-                        ? UserAttributeLabelGenerator.generateErrorText(configPropertyOf(context, USER_ATTRIBUTE))
-                        : "Invalid ".concat(configPropertyOf(context, USER_ATTRIBUTE)); // use raw attribute name
+                errorText = isGenerateLabelEnabled(context) // generate pretty error if property is not disabled
+                        ? UserAttributeLabelGenerator.generateErrorText(configPropertyOf(context, LOGIN_FORM_USER_ATTRIBUTE))
+                        : "Invalid ".concat(configPropertyOf(context, LOGIN_FORM_USER_ATTRIBUTE)); // use raw attribute name
             }
         }
 
@@ -150,7 +149,7 @@ public class UsernamePasswordAttributeForm extends UsernamePasswordForm implemen
             context.clearUser();
         }
 
-        Response challengeResponse = challenge(context, errorText, USER_ATTRIBUTE);
+        Response challengeResponse = challenge(context, errorText, LOGIN_FORM_USER_ATTRIBUTE);
 
         if (isAttributeEmpty) {
             context.forceChallenge(challengeResponse);

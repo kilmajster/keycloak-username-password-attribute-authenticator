@@ -1,4 +1,4 @@
-# Keycloak username password attribute 
+# Keycloak username password attribute authenticator
 [![automation tests](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/actions/workflows/automation-tests.yml/badge.svg)](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/actions/workflows/automation-tests.yml)
 ![Maven Central](https://img.shields.io/maven-central/v/io.github.kilmajster/keycloak-username-password-attribute-authenticator)
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/kilmajster/keycloak-username-password-attribute-authenticator?label=docker%20hub)
@@ -6,7 +6,7 @@
 ![GitHub](https://img.shields.io/github/license/kilmajster/keycloak-username-password-attribute-authenticator)
 
 ## Description
-Keycloak default login form with additional user attribute validation.
+Keycloak default login form with additional user attribute validation. Example:
 
 <p align="center">
   <img alt="Login form preview" src="/.github/img/shoe-size-form.png" width="45%">
@@ -63,28 +63,31 @@ extraVolumes: |
     <img src="/.github/img/authenticator-execution-config-tooltip.png" alt="Form config tooltip">
 </p>
 
-TODO
-
 #### Minimal configuration
+- login_form_user_attribute
+
 <p align="center">
     <img src="/.github/img/shoe-size-form-config.png" alt="Authenticator configuration">
 </p>
 
-TODO
-
 #### Advanced configuration
+ - login_form_generate_label
+ - login_form_attribute_label
+ - login_form_error_message
+ - clear_user_on_attribute_validation_fail
 ##### config via Keycloak API
 TODO
-##### config via env variables
-TODO
-
+##### Configuration via environment variables
+- LOGIN_FORM_GENERATE_LABEL
+- LOGIN_FORM_ATTRIBUTE_LABEL
+- LOGIN_FORM_ERROR_MESSAGE
+- CLEAR_USER_ON_ATTRIBUTE_VALIDATION_FAIL
 
 ### Theme configuration
 #### Using bundled default keycloak theme
  - choose theme `base-with-attribute`
  - override authentication flow to `Browser with user attribute`
 
-TODO
 #### Extending own theme
 ```html
 ...
@@ -116,7 +119,6 @@ TODO
 <div class="${properties.kcFormGroupClass!} ${properties.kcFormSettingClass!}">
 ...        
 ```
-TODO
 
 -------------------------------------
 ### Development

@@ -3,17 +3,17 @@ Feature: Login form with user attribute and environment variable based configura
   Scenario: label and error message are generated from attribute name when environment variable configuration is empty
     Given keycloak is running with default setup
     When user navigates to login page
-    Then login form with attribute input labeled as "Test attr" should be shown
+    Then login form with attribute input labeled as "Shoe size" should be shown
     When user log into account console with a valid credentials and user attribute equal "invalid-user-attribute"
-    Then form error with message "Invalid test attr." is present
+    Then form error with message "Invalid shoe size." is present
     And attempted username is cleared
 
   Scenario: attempted username is not cleared when clearing is disabled via environment variable
     Given keycloak is running with CLEAR_USER_ON_ATTRIBUTE_VALIDATION_FAIL = false
     When user navigates to login page
-    Then login form with attribute input labeled as "Test attr" should be shown
+    Then login form with attribute input labeled as "Shoe size" should be shown
     When user log into account console with a valid credentials and user attribute equal "invalid-user-attribute"
-    Then form error with message "Invalid test attr." is present
+    Then form error with message "Invalid shoe size." is present
     And attempted username is set to "test"
     And restart login link is visible
 
@@ -28,9 +28,9 @@ Feature: Login form with user attribute and environment variable based configura
   Scenario: label and error message are taken from attribute name without prettify
     Given keycloak is running with LOGIN_FORM_GENERATE_LABEL = false
     When user navigates to login page
-    Then login form with attribute input labeled as "test_attr" should be shown
+    Then login form with attribute input labeled as "shoe_size" should be shown
     When user log into account console with a valid credentials and user attribute equal "invalid-user-attribute"
-    Then form error with message "Invalid test_attr" is present
+    Then form error with message "Invalid shoe_size" is present
     And attempted username is cleared
 
   Scenario: label and error message are taken from environment variable
