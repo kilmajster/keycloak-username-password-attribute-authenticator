@@ -20,7 +20,7 @@ To use this authenticator, it should be bundled together with Keycloak, here are
 ### Deploying jar file
 To deploy custom Keycloak extension it needs to be placed in `{$KEYCLOAK_PATH}/standalone/deployments/`.
 Latest authenticator jar file can be downloaded from 
-[Github Releases](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/releases/latest) or 
+[Github Releases](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/releases/latest) page or 
 [Maven Central Repository](https://mvnrepository.com/artifact/io.github.kilmajster/keycloak-username-password-attribute-authenticator/latest). 
 
 ### Using Docker init container
