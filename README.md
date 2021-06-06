@@ -76,22 +76,22 @@ Following steps shows how to create authentication flow that uses authenticator 
 </p>
 
 ### Minimal configuration
-##### `User attribute`
-Attribute used to validate login form.
+ - ##### `User attribute`
+   Attribute used to validate login form.
 ### Advanced configuration
-##### `Generate label` (default true)
-If enabled, label for login form will be generated based on attribute name, so attribute with name:
-- `foot_size` will be labeled as _Foot size_
-- `REALLY_custom.user-Attribute` will be translated to _Really custom user attribute_, etc.
-
-By default, set to `true`. If `User attribute form label`
-is configured, label is taken form configuration and generation is skipped.
-##### `Clear user on validation fail` (default true)
-If enabled, user is not stored in session context in case username and password were valid but user attribute was not.
-##### `User attribute form label`
-Message which will be displayed as user attribute input label. If value is a valid message key, then proper translation will be used.
-##### `Validation error message`
-Message which will be displayed as user attribute validation error. If value is a valid message key, then proper translation will be used.
+ - ##### `Generate label` (default true)
+   If enabled, label for login form will be generated based on attribute name, so attribute with name:
+   - `foot_size` will be labeled as _Foot size_
+   - `REALLY_custom.user-Attribute` will be translated to _Really custom user attribute_, etc.
+   
+   By default, set to `true`. If `User attribute form label`
+   is configured, label is taken form configuration and generation is skipped.
+ - ##### `Clear user on validation fail` (default true)
+   If enabled, user is not stored in session context in case username and password were valid but user attribute was not.
+ - ##### `User attribute form label`
+   Message which will be displayed as user attribute input label. If value is a valid message key, then proper translation will be used.
+ - ##### `Validation error message`
+   Message which will be displayed as user attribute validation error. If value is a valid message key, then proper translation will be used.
 
 #### Configuration via environment variables
 Configuration could be also provided as environment variables.
