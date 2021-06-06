@@ -54,96 +54,55 @@ extraVolumes: |
 ``` 
 
 ## Configuration
-### Authentication configuration
-<p align="center">
-    <img src="/.github/img/new-authenticator-execution.png" alt="New authentication execution">
-</p>
-
-<p align="center">
-    <img src="/.github/img/foot-size-execution-config-tooltip.png" alt="Form config tooltip">
-</p>
-
-#### Minimal configuration
+### Authenticator config
+#### config via Keycloak UI / API
 - login_form_user_attribute
+- login_form_generate_label
+- login_form_attribute_label
 
-<p align="center">
-    <img src="/.github/img/foot-size-form-config.png" alt="Authenticator configuration">
-</p>
-
-#### Advanced configuration
- - login_form_generate_label
- - login_form_attribute_label
- - login_form_error_message
- - clear_user_on_attribute_validation_fail
-##### config via Keycloak API
-TODO
-##### Configuration via environment variables
+#### config via env variables
+- LOGIN_FORM_USER_ATTRIBUTE
 - LOGIN_FORM_GENERATE_LABEL
 - LOGIN_FORM_ATTRIBUTE_LABEL
-- LOGIN_FORM_ERROR_MESSAGE
-- CLEAR_USER_ON_ATTRIBUTE_VALIDATION_FAIL
 
-### Theme configuration
+### Theme config
 #### Using bundled default keycloak theme
- - choose theme `base-with-attribute`
- - override authentication flow to `Browser with user attribute`
-
 #### Extending own theme
-```html
-...
-<div class="${properties.kcFormGroupClass!}">
-    <label for="password" class="${properties.kcLabelClass!}">${msg("password")}</label>
-
-    <input tabindex="2" id="password" class="${properties.kcInputClass!}" name="password" type="password" autocomplete="off"
-           aria-invalid="<#if messagesPerField.existsError('username','password')>true</#if>"
-    />
-</div>
-
-<!-- keycloak-user-attribute-authenticator custom code block start -->
-<div class="${properties.kcFormGroupClass!}">
-    <label for="login_form_user_attribute" class="${properties.kcLabelClass!}">
-        <#if login_form_attribute_label??>
-            ${msg(login_form_attribute_label)}
-        <#else>
-            ${msg("login_form_attribute_label_default")}
-        </#if>
-    </label>
-
-    <input tabindex="3" id="login_form_user_attribute" class="${properties.kcInputClass!}"
-           name="login_form_user_attribute" type="text" autocomplete="off"
-           aria-invalid="<#if messagesPerField.existsError('login_form_user_attribute')>true</#if>"
-    />
-</div>
-<!-- keycloak-user-attribute-authenticator custom code block end -->
 
 <div class="${properties.kcFormGroupClass!} ${properties.kcFormSettingClass!}">
 ...        
 ```
 
--------------------------------------
+-----------------
 ### Development
-#### build the project
+#### Build the project
 ```shell
 $ mvn package
 ```
-#### run with docker-compose
+
+#### Run Keycloak with authenticator in Docker
+After building a project, do following to start Keycloak with bundled authenticator jar and dummy configuration ([`dev-realm.json`](src/test/resources/dev-realm.json)).
 ```shell
 $ docker-compose up --build
 ```
-http://localhost:8081/auth/realms/dev-realm/account
-##### debug in docker with IntelliJ
+Open browser and go to http://localhost:8081/auth/realms/dev-realm/account 
+use _Username or email_ = `test`, _Password_ = `test` and _Foot size_ = `46` to login.
+
+##### Debug in docker with IntelliJ
 `.github/debug-in-docker.run.xml`
 
-#### automation tests
-##### build test docker image
+#### Automation tests
+##### Build test docker image
 ```shell
 $ docker-compose build
 ```
-##### running tests with chrome
+
+##### Running tests with chrome
 ```shell
 $ mvn test -P automation-tests
 ```
-##### running tests in docker
+
+##### Running tests in docker
 ```shell
 $ mvn test -P automation-tests -D selenide.headless=true
 ```
