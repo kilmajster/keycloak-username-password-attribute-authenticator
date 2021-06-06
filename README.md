@@ -7,8 +7,11 @@
 
 ## Description
 Keycloak default login form with additional user attribute validation.
+
 <p align="center">
-    <img src="/.github/img/shoe-size-form.png" alt="Login form preview">
+  <img alt="Login form preview" src="/.github/img/shoe-size-form.png" width="45%">
+&nbsp; &nbsp; &nbsp; &nbsp;
+  <img alt="Form error message preview" src="/.github/img/shoe-size-form-error.png" width="45%">
 </p>
 
 ## Usage
@@ -54,6 +57,10 @@ extraVolumes: |
 ### Authentication configuration
 <p align="center">
     <img src="/.github/img/new-authenticator-execution.png" alt="New authentication execution">
+</p>
+
+<p align="center">
+    <img src="/.github/img/authenticator-execution-config-tooltip.png" alt="Form config tooltip">
 </p>
 
 TODO
