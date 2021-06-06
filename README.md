@@ -101,16 +101,10 @@ If such config exists, then configuration from Keycloak admin UI is ignored. Ava
 - LOGIN_FORM_ERROR_MESSAGE
 - CLEAR_USER_ON_ATTRIBUTE_VALIDATION_FAIL
 
-#### config via Keycloak API
-- login_form_generate_label
-- login_form_attribute_label
-- login_form_error_message
-- clear_user_on_attribute_validation_fail
-
 ### Theme configuration
 Theme configuration is handled in clients section, in following example Keycloak default `account-console` client will be used.
 
-#### Using bundled default keycloak theme
+#### Using bundled default Keycloak theme
 In Keycloak admin panel, go to _Clients_ and select client you want to authenticate with user attribute form. As _Login Theme_ set `base-with-attribute`
 and in _Authentication Flow Overrides_ for _Browser Flow_, choose authentication that contain previously configured login form, 
 so for example `Browser with user attribute`, like below:
@@ -119,7 +113,7 @@ so for example `Browser with user attribute`, like below:
 </p>
 
 #### Extending own theme
-If you have own theme, then in `.your-theme/login/login.ftl` add following below `<div>` responsible for a password stuff or anywhere you want.
+If you have your own theme, then in `.your-theme/login/login.ftl` add following below `<div>` responsible for a password stuff or anywhere you want.
 How it was done with _Keycloak base_ theme, you can check [here](/src/main/resources/theme/base-with-attribute/login/login.ftl).
 ```html
 ...
@@ -160,10 +154,12 @@ $ mvn package
 ```
 
 #### Run Keycloak with authenticator in Docker
+After building a project, do following to start Keycloak with bundled authenticator jar and dummy configuration ([`dev-realm.json`](src/test/resources/dev-realm.json)).
 ```shell
 $ docker-compose up --build
 ```
-Open browser and go to http://localhost:8081/auth/realms/dev-realm/account
+Open browser and go to http://localhost:8081/auth/realms/dev-realm/account 
+use _Username or email_ = `test`, _Password_ = `test` and _Foot size_ = `46` to login.
 
 ##### Debug in docker with IntelliJ
 `.github/debug-in-docker.run.xml`
