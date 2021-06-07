@@ -21,7 +21,7 @@ public interface UsernamePasswordAttributeFormConfiguration {
             .name(LOGIN_FORM_USER_ATTRIBUTE)
             .type(ProviderConfigProperty.STRING_TYPE)
             .label("User attribute")
-            .helpText("TODO")
+            .helpText("Attribute used to validate login form.")
             .add()
 
             .property()
@@ -29,7 +29,10 @@ public interface UsernamePasswordAttributeFormConfiguration {
             .type(ProviderConfigProperty.BOOLEAN_TYPE)
             .label("Generate label")
             .defaultValue("true") // only string value is accepted
-            .helpText("TODO")
+            .helpText("If enabled, label for login form will be generated based on attribute name, so attribute with name:" +
+                    " \"foot_size\" will be labeled as \"Foot size\", \"REALLY_custom.user-Attribute\" will be translated " +
+                    "to \"Really custom user attribute\", etc. By default, set to true. If User attribute form label " +
+                    "is configured, label is taken form configuration and generation is skipped.")
             .add()
 
             .property()
@@ -37,21 +40,21 @@ public interface UsernamePasswordAttributeFormConfiguration {
             .type(ProviderConfigProperty.BOOLEAN_TYPE)
             .label("Clear user on validation fail")
             .defaultValue("true") // only string value is accepted
-            .helpText("TODO")
+            .helpText("If enabled, user is not stored in session context in case username and password were valid but user attribute was not.")
             .add()
 
             .property()
             .name(LOGIN_FORM_ATTRIBUTE_LABEL)
             .type(ProviderConfigProperty.STRING_TYPE)
             .label("User attribute form label")
-            .helpText("TODO")
+            .helpText("Message which will be displayed as user attribute input label. If value is a valid message key, then proper translation will be used.")
             .add()
 
             .property()
             .name(LOGIN_FORM_ERROR_MESSAGE)
             .type(ProviderConfigProperty.STRING_TYPE)
             .label("Validation error message")
-            .helpText("TODO")
+            .helpText("Message which will be displayed as user attribute validation error. If value is a valid message key, then proper translation will be used.")
             .add()
 
             .build();
