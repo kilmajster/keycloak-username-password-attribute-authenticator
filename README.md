@@ -4,7 +4,7 @@
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/kilmajster/keycloak-username-password-attribute-authenticator?label=docker%20hub)
 ![Docker Pulls](https://img.shields.io/docker/pulls/kilmajster/keycloak-username-password-attribute-authenticator)
 ![GitHub](https://img.shields.io/github/license/kilmajster/keycloak-username-password-attribute-authenticator)
-
+[![compatible with Keycloak - 16.1.1](https://img.shields.io/badge/compatible_with_Keycloak-16.1.1-2ea44f)](https://)
 ## Description
 Keycloak default login form with additional user attribute validation. Example:
 
@@ -147,13 +147,13 @@ How it was done with _Keycloak base_ theme, you can check [here](/src/main/resou
 ```
 
 -----------------
-### Development
+### Testing & development
 #### Build the project
 ```shell
 $ mvn package
 ```
 
-#### Run Keycloak with authenticator in Docker
+#### Run Keycloak with authenticator in docker-compose
 After building a project, do following to start Keycloak with bundled authenticator jar and dummy configuration ([`dev-realm.json`](src/test/resources/dev-realm.json)).
 ```shell
 $ docker-compose up --build

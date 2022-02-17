@@ -1,4 +1,4 @@
-FROM quay.io/keycloak/keycloak:latest
+FROM jboss/keycloak:16.1.1
 
 ARG VERSION=SNAPSHOT
 
