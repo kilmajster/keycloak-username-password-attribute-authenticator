@@ -1,6 +1,8 @@
 package io.github.kilmajster.keycloak;
 
 import io.github.kilmajster.keycloak.ui.UserAttributeLabelGenerator;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Response;
 import org.jboss.resteasy.specimpl.MultivaluedMapImpl;
 import org.keycloak.authentication.AuthenticationFlowContext;
 import org.keycloak.authentication.AuthenticationFlowError;
@@ -19,8 +21,6 @@ import org.keycloak.services.managers.AuthenticationManager;
 import org.keycloak.services.messages.Messages;
 import org.keycloak.services.validation.Validation;
 
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
 
 import static io.github.kilmajster.keycloak.UsernamePasswordAttributeFormConfiguration.*;
 
@@ -97,7 +97,7 @@ public class UsernamePasswordAttributeForm extends UsernamePasswordForm implemen
         context.clearUser();
         UserModel user = getUser(context, formData);
         return user != null
-                && validatePassword(context, user, formData) && validateUser(context, user, formData)
+                && validatePassword(context, user, formData, true) && validateUser(context, user, formData)
                 && validateUserAttribute(context, user, formData);
     }
 

@@ -1,20 +1,16 @@
 version: '3'
 
 services:
-  keycloak:
+  keycloak-dev:
     image: kilmajster/keycloak-with-authenticator:test
-    container_name: keycloak-dev
     build:
       context: .
       dockerfile: src/main/docker/dev.Dockerfile
     ports:
-      - 8081:8080
-      - 8787:8787
-    volumes:
-      - ./src/test/resources/dev-realm.json:/tmp/dev-realm.json
+      - '8080:8080'
+      - '8787:8787'
     environment:
       DEBUG: 'true'
       DEBUG_PORT: '*:8787'
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
-      KEYCLOAK_IMPORT: /tmp/dev-realm.json
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin

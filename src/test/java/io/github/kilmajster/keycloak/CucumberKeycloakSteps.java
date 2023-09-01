@@ -15,19 +15,29 @@ import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
-import static io.github.kilmajster.keycloak.TestConstants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public final class KeycloakSteps {
+public final class CucumberKeycloakSteps {
 
-    private static final Logger log = LoggerFactory.getLogger(KeycloakSteps.class);
+    private static final Logger log = LoggerFactory.getLogger(CucumberKeycloakSteps.class);
 
-    private final KeycloakContainer keycloak = new KeycloakContainer(KEYCLOAK_DEV_DOCKER_IMAGE)
+    String KEYCLOAK_DEV_DOCKER_IMAGE = "kilmajster/keycloak-with-authenticator:test";
+    String KEYCLOAK_LOCAL_URL_PREFIX = "http://localhost:";
+
+    String TEST_USERNAME = "test";
+    String TEST_PASSWORD = "test";
+
+    private final KeycloakContainer keycloak = new KeycloakContainer()
             .withRealmImportFile("dev-realm.json")
+            .withProviderClassesFrom("target/classes")
             .withLogConsumer(new Slf4jLogConsumer(log));
 
     @Given("keycloak is running with default setup")
     public void keycloak_is_running_with_default_setup() {
+//        WebDriverRunner.setWebDriver(FirefoxDriver.builder().build());
+
+//        open("https://www.google.pl");
+
         if (!keycloak.isRunning()) {
             log.info("Starting keycloak container...");
             keycloak.start();
@@ -45,11 +55,11 @@ public final class KeycloakSteps {
 
     @When("user goes to the account console page")
     public void go_to_keycloak_account_page() {
-        final String keycloakUrl = TestConstants.KEYCLOAK_LOCAL_URL_PREFIX + keycloak.getFirstMappedPort();
+        final String keycloakUrl = KEYCLOAK_LOCAL_URL_PREFIX + keycloak.getHttpsPort();
 
         log.info("go_to_keycloak_account_page() :: keycloakUrl = " + keycloakUrl);
 
-        open(keycloakUrl + "/auth/realms/dev-realm/account");
+        open(keycloakUrl + "/realms/dev-realm/account");
     }
 
     @Then("user should be not logged in")
