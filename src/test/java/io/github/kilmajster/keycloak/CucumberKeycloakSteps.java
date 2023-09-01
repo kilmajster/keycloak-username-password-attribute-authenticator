@@ -1,6 +1,7 @@
 package io.github.kilmajster.keycloak;
 
 import com.codeborne.selenide.SelenideElement;
+import com.codeborne.selenide.WebDriverRunner;
 import dasniko.testcontainers.keycloak.KeycloakContainer;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -9,53 +10,64 @@ import io.cucumber.java.en.When;
 import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testcontainers.containers.BrowserWebDriverContainer;
+import org.testcontainers.containers.Network;
 import org.testcontainers.containers.output.Slf4jLogConsumer;
+
+import java.io.File;
 
 import static com.codeborne.selenide.Condition.exactText;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.open;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.testcontainers.containers.BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL;
 
 public final class CucumberKeycloakSteps {
 
     private static final Logger log = LoggerFactory.getLogger(CucumberKeycloakSteps.class);
 
-    String KEYCLOAK_DEV_DOCKER_IMAGE = "kilmajster/keycloak-with-authenticator:test";
-    String KEYCLOAK_LOCAL_URL_PREFIX = "http://localhost:";
+    String KEYCLOAK_DOCKER_SERVICE_NAME = "keycloak";
+    String KEYCLOAK_DOCKER_URL = "http://" + KEYCLOAK_DOCKER_SERVICE_NAME + ":8080";
+    String KEYCLOAK_TEST_USERNAME = "test";
+    String KEYCLOAK_TEST_PASSWORD = "test";
 
-    String TEST_USERNAME = "test";
-    String TEST_PASSWORD = "test";
+    Network network = Network.newNetwork();
+
+    public BrowserWebDriverContainer<?> chrome = new BrowserWebDriverContainer<>()
+            .withNetwork(network)
+            .withRecordingMode(RECORD_ALL, new File("target"));
 
     private final KeycloakContainer keycloak = new KeycloakContainer()
+            .withNetwork(network)
+            .withNetworkAliases(KEYCLOAK_DOCKER_SERVICE_NAME)
             .withRealmImportFile("dev-realm.json")
             .withProviderClassesFrom("target/classes")
             .withLogConsumer(new Slf4jLogConsumer(log));
 
     @Given("keycloak is running with default setup")
     public void keycloak_is_running_with_default_setup() {
-//        WebDriverRunner.setWebDriver(FirefoxDriver.builder().build());
-
-//        open("https://www.google.pl");
-
         if (!keycloak.isRunning()) {
-            log.info("Starting keycloak container...");
+            log.info("Starting Keycloak container...");
             keycloak.start();
+        }
+
+        if (!chrome.isRunning()) {
+            log.info("Starting Chrome container...");
+            chrome.start();
+            WebDriverRunner.setWebDriver(chrome.getWebDriver());
         }
     }
 
     @Given("keycloak is running with {} = {}")
     public void keycloak_is_running_with_env(final String envKey, final String envValue) {
         keycloak.addEnv(envKey, envValue);
-        if (!keycloak.isRunning()) {
-            log.info("Starting keycloak container with " + envKey + " = " + envValue);
-            keycloak.start();
-        }
+        keycloak_is_running_with_default_setup();
     }
 
     @When("user goes to the account console page")
     public void go_to_keycloak_account_page() {
-        final String keycloakUrl = KEYCLOAK_LOCAL_URL_PREFIX + keycloak.getHttpsPort();
+        final String keycloakUrl = KEYCLOAK_DOCKER_URL;
 
         log.info("go_to_keycloak_account_page() :: keycloakUrl = " + keycloakUrl);
 
@@ -98,8 +110,8 @@ public final class CucumberKeycloakSteps {
     public void log_into_account_console(final String attribute) {
         log.info("log_into_account_console()");
 
-        $(By.id("username")).val(TEST_USERNAME);
-        $(By.id("password")).val(TEST_PASSWORD);
+        $(By.id("username")).val(KEYCLOAK_TEST_USERNAME);
+        $(By.id("password")).val(KEYCLOAK_TEST_PASSWORD);
         $(By.id("login_form_user_attribute")).val(attribute);
         $(By.id("kc-login")).click();
     }

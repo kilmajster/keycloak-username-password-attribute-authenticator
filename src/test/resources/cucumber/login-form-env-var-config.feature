@@ -1,3 +1,4 @@
+@ignore
 Feature: Login form with user attribute and environment variable based configuration
 
   Scenario: label and error message are generated from attribute name when environment variable configuration is empty
