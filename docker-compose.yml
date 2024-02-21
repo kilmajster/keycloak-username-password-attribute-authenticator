@@ -1,16 +1,24 @@
 version: '3'
 
 services:
-  keycloak-dev:
-    image: kilmajster/keycloak-with-authenticator:test
-    build:
-      context: .
-      dockerfile: src/main/docker/dev.Dockerfile
-    ports:
-      - '8080:8080'
-      - '8787:8787'
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:22.0.3
+    entrypoint: [ "/opt/keycloak/bin/kc.sh", "--verbose", "start-dev", "--import-realm" ]
     environment:
       DEBUG: 'true'
       DEBUG_PORT: '*:8787'
+      KC_PROXY: edge
+      KC_HTTP_PORT: 8080
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
+    volumes:
+      - type: bind
+        source: ./target
+        target: /opt/keycloak/providers
+      - type: bind
+        source: ./src/test/resources/keycloak
+        target: /opt/keycloak/data/import
+    ports:
+      - '8080:8080'
+      - '8787:8787'

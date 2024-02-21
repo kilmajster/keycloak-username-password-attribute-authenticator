@@ -4,7 +4,11 @@
 ![Docker Image Version (latest by date)](https://img.shields.io/docker/v/kilmajster/keycloak-username-password-attribute-authenticator?label=docker%20hub)
 ![Docker Pulls](https://img.shields.io/docker/pulls/kilmajster/keycloak-username-password-attribute-authenticator)
 ![GitHub](https://img.shields.io/github/license/kilmajster/keycloak-username-password-attribute-authenticator)
-[![compatible with Keycloak - 16.1.1](https://img.shields.io/badge/compatible_with_Keycloak-16.1.1-2ea44f)](https://)
+
+| <img src="https://img.shields.io/badge/compatible_with_Keycloak-16.1.1-orange" alt="compatible with Keycloak - 16.1.1"> | [`keycloak-username-password-attribute-authenticator:0.3.0`](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/tree/0.3.0) |
+|-------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <img src="https://img.shields.io/badge/compatible_with_Keycloak-22.0.3-blue" alt="compatible with Keycloak - 22.0.3">   | [`keycloak-username-password-attribute-authenticator:1.0.0`](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/tree/main)  |
+
 ## Description
 Keycloak default login form with additional user attribute validation. Example:
 
@@ -15,53 +19,26 @@ Keycloak default login form with additional user attribute validation. Example:
 </p>
 
 ## Usage
-To use this authenticator, it should be bundled together with Keycloak, here are two ways how to do that:
+To use this authenticator, it should be bundled together with Keycloak, here is example _Dockerfile_:
+```dockerfile
+FROM alpine/curl as custom_providers
+RUN curl -s -L -o /home/keycloak-username-password-attribute-authenticator:1.0.0.jar https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/releases/download/0.3.0/keycloak-username-password-attribute-authenticator-0.3.0.jar
 
-### Deploying jar file
-To deploy custom Keycloak extension it needs to be placed in `{$KEYCLOAK_PATH}/standalone/deployments/`.
-Latest authenticator jar file can be downloaded from
-[Github Releases](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/releases/latest) page or
-[Maven Central Repository](https://mvnrepository.com/artifact/io.github.kilmajster/keycloak-username-password-attribute-authenticator/latest).
-
-### Using Docker init container
-If you want to use this authenticator in cloud environment, here is ready [init container](https://hub.docker.com/r/kilmajster/keycloak-username-password-attribute-authenticator).
-Jar file is placed in `/opt/jboss/keycloak/standalone/deployments`, so same location as target one.
-According to official Keycloak [example](https://github.com/codecentric/helm-charts/blob/master/charts/keycloak/README.md#providing-a-custom-theme),
-Helm chart could look like following:
-```yaml
-extraInitContainers: |
-  - name: attribute-authenticator-provider
-    image: kilmajster/keycloak-username-password-attribute-authenticator:latest
-    imagePullPolicy: IfNotPresent
-    command:
-      - sh
-    args:
-      - -c
-      - |
-        echo "Copying attribute authenticator..."
-        cp -R /opt/jboss/keycloak/standalone/deployments/*.jar /attribute-authenticator
-    volumeMounts:
-      - name: attribute-authenticator
-        mountPath: /attribute-authenticator
-
-extraVolumeMounts: |
-  - name: attribute-authenticator
-    mountPath: /opt/jboss/keycloak/standalone/deployments
-
-extraVolumes: |
-  - name: attribute-authenticator
-    emptyDir: {}
-``` 
+FROM quay.io/keycloak/keycloak:22.0.3
+COPY --from=custom_providers /home/ /opt/keycloak/providers
+RUN /opt/keycloak/bin/kc.sh build
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start"]
+```
 
 ## Configuration
 Following steps shows how to create authentication flow that uses authenticator with user attribute validation.
-1. In Keycloak admin console, go to _Authentication_ section, select authentication type of _Browser_ and click _Copy_.
+1. In Keycloak admin console, go to _Authentication_ section, duplicate _Browser_ flow.
 2. Set name for new authentication flow eg. `Browser with user attribute` and click _Ok_.
 3. In newly created authentication flow remove _Username Password Form_ execution.
 4. On _Browser With User Attribute Forms_ level, click _Actions_ > _Add execution_ and select provider of type
    _Username Password Attribute Form_, then save.
 <p align="center">
-    <img src="/.github/img/new-authenticator-execution.png" alt="New authentication execution">
+    <img src="/.github/img/foot-size-execution-config-tooltip.png" alt="New authentication execution">
 </p>
 
 5. Then move _Username Password Attribute Form_ on a previous position of _Username Password Form_,
