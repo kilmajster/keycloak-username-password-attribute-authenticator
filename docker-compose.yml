@@ -3,7 +3,7 @@ version: '3'
 services:
   keycloak:
     container_name: keycloak
-    image: quay.io/keycloak/keycloak:22.0.3
+    image: quay.io/keycloak/keycloak:24.0.1
     entrypoint: [ "/opt/keycloak/bin/kc.sh", "--verbose", "start-dev", "--import-realm" ]
     environment:
       DEBUG: 'true'
@@ -17,8 +17,8 @@ services:
         source: ./target
         target: /opt/keycloak/providers
       - type: bind
-        source: ./src/test/resources/keycloak
-        target: /opt/keycloak/data/import
+        source: ./dev-realm.json
+        target: /opt/keycloak/data/import/dev-realm.json
     ports:
       - '8080:8080'
       - '8787:8787'
