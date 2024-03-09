@@ -37,7 +37,8 @@ public class UsernamePasswordAttributeForm extends UsernamePasswordForm implemen
 
     @Override
     protected boolean validateForm(AuthenticationFlowContext context, MultivaluedMap<String, String> formData) {
-        return super.validateForm(context, formData) && isUserAttributeValid(context, formData.getFirst(USER_ATTRIBUTE));
+        return super.validateForm(context, formData)
+                && isUserAttributeValid(context, formData.getFirst(USER_ATTRIBUTE));
     }
 
     private void setUserAttributeFormLabel(AuthenticationFlowContext context) {
@@ -52,7 +53,7 @@ public class UsernamePasswordAttributeForm extends UsernamePasswordForm implemen
                 context.form().setAttribute(
                         USER_ATTRIBUTE_LABEL,
                         isGenerateLabelEnabled(context)
-                                ? generateLabel(userAttributeName)
+                                ? generateLabel(userAttributeName, true)
                                 : userAttributeName
                 );
             } else {
@@ -75,9 +76,9 @@ public class UsernamePasswordAttributeForm extends UsernamePasswordForm implemen
                 context.form().addError(
                         new FormMessage(
                                 FIELD_PASSWORD,
-                                "invalidPasswordOrAttributeMessage",
+                                "invalidUsernamePasswordOrAttributeMessage",
                                 isGenerateLabelEnabled(context)
-                                        ? generateLabel(userAttributeName)
+                                        ? generateLabel(userAttributeName, false)
                                         : userAttributeName
                         )
                 );
@@ -115,17 +116,17 @@ public class UsernamePasswordAttributeForm extends UsernamePasswordForm implemen
         return false;
     }
 
-    private String generateLabel(final String attributeName) {
+    private String generateLabel(final String attributeName, boolean capitalize) {
         final String lowercaseWithSpaces = attributeName
                 .toLowerCase()
                 .replace(".", " ")
                 .replace("_", " ")
                 .replace("-", " ");
 
-        return capitalize(lowercaseWithSpaces);
+        return capitalize ? capitalize(lowercaseWithSpaces) : lowercaseWithSpaces;
     }
 
-    private String capitalize(final String lowercaseWithSpaces) {
-        return lowercaseWithSpaces.substring(0, 1).toUpperCase() + lowercaseWithSpaces.substring(1).toLowerCase();
+    private String capitalize(final String toCapitalize) {
+        return toCapitalize.substring(0, 1).toUpperCase() + toCapitalize.substring(1).toLowerCase();
     }
 }
