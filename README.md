@@ -17,7 +17,7 @@ Keycloak default login form with additional user attribute validation. Example:
 </p>
 
 ## Usage
-To use this authenticator, it should be bundled together with Keycloak, here are two ways how to do that:
+To use this authenticator, it should be bundled together with Keycloak, here's how do that:
 
 ### Deploying jar
 Build your Keycloak image like below:
