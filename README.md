@@ -5,7 +5,7 @@
 #### Supported Keycloak versions
 | <img src="https://img.shields.io/badge/compatible_with_Keycloak-16.1.1-orange" alt="compatible with Keycloak - 16.1.1"> | [`keycloak-username-password-attribute-authenticator:0.3.0`](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/tree/0.3.0) |
 |-------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| <img src="https://img.shields.io/badge/compatible_with_Keycloak-24.0.1-blue" alt="compatible with Keycloak - 24.0.1">   | [`keycloak-username-password-attribute-authenticator:1.0.0`](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/tree/main)  |
+| <img src="https://img.shields.io/badge/compatible_with_Keycloak-24.0.1-blue" alt="compatible with Keycloak - 24.0.1">   | [`keycloak-username-password-attribute-authenticator:1.0.1`](https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/tree/main)  |
 
 ## Description
 Keycloak default login form with additional user attribute validation. Example:
@@ -24,7 +24,7 @@ Build your Keycloak image like below:
 ```Dockerfile
 FROM quay.io/keycloak/keycloak:24.0.1
 
-RUN curl -s -L -o /opt/keycloak/providers/keycloak-username-password-attribute-authenticator-1.0.0.jar https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/releases/download/1.0.0/keycloak-username-password-attribute-authenticator-1.0.0.jar
+RUN curl -s -L -o /opt/keycloak/providers/keycloak-username-password-attribute-authenticator-1.0.1.jar https://github.com/kilmajster/keycloak-username-password-attribute-authenticator/releases/download/1.0.1/keycloak-username-password-attribute-authenticator-1.0.1.jar
 RUN /opt/keycloak/bin/kc.sh build
 
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start"]
