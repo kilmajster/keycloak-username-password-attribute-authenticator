@@ -27,23 +27,6 @@ jobs:
       - name: Set version from git tag
         run: mvn -B -ntp versions:set -DgenerateBackupPoms=false -DnewVersion="$TAG"
 
-      - name: Import GPG key
-        run: |
-          cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
-          gpg --list-secret-keys --keyid-format LONG
-
-      - name: Publish maven package
-        run: |
-          mvn \
-          --no-transfer-progress \
-          --batch-mode \
-          -D gpg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} \
-          -P ossrh \
-          clean deploy
-        env:
-          MAVEN_USERNAME: kilmajster
-          MAVEN_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-
       - name: Add jar to Github Release
         uses: svenstaro/upload-release-action@v2
         continue-on-error: true
