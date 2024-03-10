@@ -120,5 +120,5 @@ After building a project, do following to start Keycloak with bundled authentica
 ```shell
 $ docker compose up
 ```
-Open browser and go to http://localhost:8081/auth/realms/dev-realm/account
+Open browser and go to http://localhost:8080/realms/dev-realm/account
 use _Username or email_ = `test`, _Password_ = `test` and _Favorite number_ = `46` to login.
